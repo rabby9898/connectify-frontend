@@ -27,6 +27,7 @@ function App() {
         throw new Error(error);
       }
     },
+    retry: false,
   });
 
   if (isLoading) {
@@ -38,7 +39,7 @@ function App() {
   }
   return (
     <div className="flex max-w-6xl mx-auto">
-      <Sidebar />
+      {authUser && <Sidebar />}
       <Routes>
         <Route
           path="/"
@@ -61,7 +62,7 @@ function App() {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
       </Routes>
-      <RightPanel />
+      {authUser && <RightPanel />}
       <Toaster />
     </div>
   );
