@@ -1,6 +1,6 @@
 import { FaRegComment } from "react-icons/fa";
 import { BiRepost } from "react-icons/bi";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
@@ -10,14 +10,17 @@ import LoadingSpinner from "./LoadingSpinner";
 import toast from "react-hot-toast";
 
 const Post = ({ post }) => {
-  const [comment, setComment] = useState("");
-  const postOwner = post.user;
-  const isLiked = false;
-
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const isMyPost = authUser._id === post.user._id;
   const queryClient = useQueryClient();
-  const { mutate: deletePost, isPending } = useMutation({
+  const [comment, setComment] = useState("");
+
+  const postOwner = post.user;
+
+  const isLiked = post.likes.includes(authUser._id);
+
+  /********post delete functionality Start***********/
+  const { mutate: deletePost, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
       try {
         const res = await fetch(`/api/posts/${post._id}`, {
@@ -38,6 +41,40 @@ const Post = ({ post }) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
+  /********post delete functionality End***********/
+  /********post like functionality Start***********/
+  const { mutate: likedPost, isPending: isLiking } = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await fetch(`/api/posts/like/${post._id}`, {
+          method: "POST",
+        });
+
+        if (!res.ok) throw new Error(data.error || "Failed to delete post");
+        const data = await res.json();
+
+        return data;
+      } catch (error) {
+        console.error(error);
+        throw new Error(error);
+      }
+    },
+    onSuccess: (updateLikes) => {
+      queryClient.setQueryData(["posts"], (oldData) => {
+        return oldData.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: updateLikes };
+          }
+          return p;
+        });
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+  /********post like functionality End***********/
+
   const formattedDate = "1h";
 
   const isCommenting = false;
@@ -51,7 +88,9 @@ const Post = ({ post }) => {
     e.preventDefault();
   };
 
-  const handleLikePost = () => {};
+  const handleLikePost = () => {
+    likedPost();
+  };
 
   return (
     <>
@@ -78,13 +117,13 @@ const Post = ({ post }) => {
             </span>
             {isMyPost && (
               <span className="flex justify-end flex-1">
-                {!isPending && (
+                {!isDeleting && (
                   <FaTrash
                     className="cursor-pointer hover:text-red-500"
                     onClick={handleDeletePost}
                   />
                 )}
-                {isPending && <LoadingSpinner size="sm" />}
+                {isDeleting && <LoadingSpinner size="sm" />}
               </span>
             )}
           </div>
@@ -163,11 +202,7 @@ const Post = ({ post }) => {
                       onChange={(e) => setComment(e.target.value)}
                     />
                     <button className="btn btn-primary rounded-full btn-sm text-white px-4">
-                      {isCommenting ? (
-                        <span className="loading loading-spinner loading-md"></span>
-                      ) : (
-                        "Post"
-                      )}
+                      {isCommenting ? <LoadingSpinner size="md" /> : "Post"}
                     </button>
                   </form>
                 </div>
@@ -185,11 +220,12 @@ const Post = ({ post }) => {
                 className="flex gap-1 items-center group cursor-pointer"
                 onClick={handleLikePost}
               >
-                {!isLiked && (
-                  <FaRegHeart className="w-4 h-4 cursor-pointer text-slate-500 group-hover:text-pink-500" />
+                {isLiking && <LoadingSpinner size="sm" />}
+                {!isLiked && !isLiking && (
+                  <FaHeart className="w-4 h-4 cursor-pointer text-slate-500 group-hover:text-pink-500" />
                 )}
-                {isLiked && (
-                  <FaRegHeart className="w-4 h-4 cursor-pointer text-pink-500 " />
+                {isLiked && !isLiking && (
+                  <FaHeart className="w-4 h-4 cursor-pointer text-pink-500 " />
                 )}
 
                 <span
