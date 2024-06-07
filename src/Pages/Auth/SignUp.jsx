@@ -56,9 +56,9 @@ const SignUpPage = () => {
     <div className="max-w-screen-xl mx-auto flex h-screen px-10">
       <div className="flex-1 hidden lg:flex items-center  justify-center">
         <ConnectifySvg className=" lg:w-2/3 fill-white" />
-        {/* <h1 className="text-5xl font-extrabold text-white">
+        <h1 className="text-5xl font-extrabold text-white">
           Connectify Network
-        </h1> */}
+        </h1>
       </div>
       <div className="flex-1 flex flex-col justify-center items-center">
         <form
