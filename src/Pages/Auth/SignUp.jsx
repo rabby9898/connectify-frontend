@@ -33,7 +33,7 @@ const SignUpPage = () => {
         return data;
       } catch (error) {
         console.error(error);
-        throw error;
+        throw new Error(error);
       }
     },
     onSuccess: () => {

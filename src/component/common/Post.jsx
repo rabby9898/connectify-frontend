@@ -5,19 +5,50 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import LoadingSpinner from "./LoadingSpinner";
+import toast from "react-hot-toast";
 
 const Post = ({ post }) => {
   const [comment, setComment] = useState("");
   const postOwner = post.user;
   const isLiked = false;
 
-  const isMyPost = true;
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const isMyPost = authUser._id === post.user._id;
+  const queryClient = useQueryClient();
+  const { mutate: deletePost, isPending } = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await fetch(`/api/auth/${post._id}`);
 
+        if (!res.ok) throw new Error(data.error || "Failed to delete post");
+        const data = res.json();
+
+        return data;
+      } catch (error) {
+        console.error(error);
+        throw new Error(error);
+      }
+    },
+    onSuccess: () => {
+      toast.success("Post deleted!");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
   const formattedDate = "1h";
 
   const isCommenting = false;
 
-  const handleDeletePost = () => {};
+  const handleDeletePost = () => {
+    deletePost();
+    // refetch();
+  };
 
   const handlePostComment = (e) => {
     e.preventDefault();
@@ -50,10 +81,13 @@ const Post = ({ post }) => {
             </span>
             {isMyPost && (
               <span className="flex justify-end flex-1">
-                <FaTrash
-                  className="cursor-pointer hover:text-red-500"
-                  onClick={handleDeletePost}
-                />
+                {!isPending && (
+                  <FaTrash
+                    className="cursor-pointer hover:text-red-500"
+                    onClick={handleDeletePost}
+                  />
+                )}
+                {isPending && <LoadingSpinner size="sm" />}
               </span>
             )}
           </div>
