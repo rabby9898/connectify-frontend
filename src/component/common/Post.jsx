@@ -5,12 +5,7 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingSpinner from "./LoadingSpinner";
 import toast from "react-hot-toast";
 
@@ -25,10 +20,12 @@ const Post = ({ post }) => {
   const { mutate: deletePost, isPending } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch(`/api/auth/${post._id}`);
+        const res = await fetch(`/api/posts/${post._id}`, {
+          method: "DELETE",
+        });
 
         if (!res.ok) throw new Error(data.error || "Failed to delete post");
-        const data = res.json();
+        const data = await res.json();
 
         return data;
       } catch (error) {
