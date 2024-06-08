@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 
 const useUpdateUserProfile = () => {
   const queryClient = useQueryClient();
+  console.log("----------------------->>>>>>>>", queryClient);
 
   const { mutateAsync: updateProfile, isPending: isUpdatingProfile } =
     useMutation({
