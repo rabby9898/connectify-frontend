@@ -16,6 +16,7 @@ const SignUpPage = () => {
     password: "",
   });
   const queryClient = useQueryClient();
+  /********Sign up functionality End***********/
   const { mutate, isError, isPending, error } = useMutation({
     mutationFn: async ({ email, username, fullName, password }) => {
       try {

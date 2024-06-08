@@ -15,6 +15,8 @@ const CreatePost = () => {
   // const isError = false;
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const queryClient = useQueryClient();
+
+  /********Create post functionality Start***********/
   const {
     mutate: createPost,
     isPending,
@@ -45,7 +47,7 @@ const CreatePost = () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
-
+  /********Create post functionality End***********/
   // const data = {
   //   profileImg: "/avatars/boy1.png",
   // };
@@ -54,7 +56,7 @@ const CreatePost = () => {
     e.preventDefault();
     createPost({ text, img });
   };
-
+  /********Image upload functionality End***********/
   const handleImgChange = (e) => {
     const file = e.target.files[0];
     if (file) {

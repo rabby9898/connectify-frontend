@@ -17,7 +17,7 @@ const Posts = ({ feedType }) => {
   };
 
   const postEndPoint = getPostEndPoint();
-
+  /********Post functionality Start***********/
   const {
     data: posts,
     isLoading,

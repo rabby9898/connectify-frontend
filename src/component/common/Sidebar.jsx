@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 
 const Sidebar = () => {
   const queryClient = useQueryClient();
+  /********Logout functionality start***********/
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
       try {
