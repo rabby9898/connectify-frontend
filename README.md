@@ -15,6 +15,7 @@ Connectify is a social media platform where users can connect, share posts, and 
 ### Posting
 
 - **Text and Media Posts:** Users have the ability to create and share posts consisting of text and media. This allows users to express their thoughts, share experiences, and engage with others through diverse content formats.
+  **Like/Unlike/Comment on posts:** Like, Unlike, and Comment: Users can react to posts by liking or unliking them. Additionally, they can engage in discussions by commenting on posts, fostering interaction and conversation within the community.
 
 ### Follow System
 
@@ -77,16 +78,3 @@ Use the following demo user credentials to log in and explore the platform:
 
 - **Username**: aravi
 - **Password**: 12345
-
-Certainly! Here is a detailed `README.md` file for your project "Connectify":
-
----
-
-# Connectify
-
-[Live Demo](https://connectify-2-0.onrender.com)
-
-## Demo User
-
-- **Username:** aravi
-- **Password:** 12345
