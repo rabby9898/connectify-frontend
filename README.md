@@ -15,7 +15,7 @@ Connectify is a social media platform where users can connect, share posts, and 
 ### Posting
 
 - **Text and Media Posts:** Users have the ability to create and share posts consisting of text and media. This allows users to express their thoughts, share experiences, and engage with others through diverse content formats.
-  **Like/Unlike/Comment on posts:** Like, Unlike, and Comment: Users can react to posts by liking or unliking them. Additionally, they can engage in discussions by commenting on posts, fostering interaction and conversation within the community.
+- **Like/Unlike/Comment on posts:** Like, Unlike, and Comment: Users can react to posts by liking or unliking them. Additionally, they can engage in discussions by commenting on posts, fostering interaction and conversation within the community.
 
 ### Follow System
 
